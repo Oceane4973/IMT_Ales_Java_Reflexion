@@ -11,11 +11,6 @@ public class ConnectionDatabase{
     private static String passwd = "1234";
     private static Connection connect;
 
-    /**
-     * Méthode qui va nous retourner notre instance
-     * et la créer si elle n'existe pas...
-     * @return
-     */
     public static Connection getInstance() {
         try {
             if (connect == null || connect.isClosed()) {
