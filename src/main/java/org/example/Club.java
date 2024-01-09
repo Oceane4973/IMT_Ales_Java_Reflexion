@@ -1,16 +1,13 @@
 package org.example;
 
-/**
- * Long id: clef primaire
- * int version: nombre de fois qu’un objet a été mis à jour, pas de getter et setter car utilisé pour vérifier la cohérence des données (pattern ‘optimistic lock’).
- * String: fabricant
- * Double: poids
- */
 public class Club {
+
     private long id;
     private int version;
     private String fabricant;
     private Double poids;
+
+    public Club(){}
 
     public Club(long id, int version, String fabricant, Double poids){
         this.id = id;

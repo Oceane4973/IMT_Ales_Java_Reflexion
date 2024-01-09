@@ -9,20 +9,19 @@ public class DAOClub extends DAO<Club> {
     public Club find(long id) {
         Club club = null;
         try {
-            ResultSet result = this.connect
-                    .createStatement(
-                            ResultSet.TYPE_SCROLL_INSENSITIVE,
-                            ResultSet.CONCUR_READ_ONLY
-                    ).executeQuery(
-                            "SELECT * FROM club WHERE club_id = " + id
-                    );
-            if(result.first())
+            PreparedStatement prepare = this.connect
+                    .prepareStatement("SELECT * FROM club WHERE club_id = ?");
+            prepare.setLong(1, id);
+            ResultSet result = prepare.executeQuery();
+
+            if (result.first()) {
                 club = new Club(
                         id,
                         result.getInt("club_version"),
                         result.getString("club_fabricant"),
                         result.getDouble("club_poids")
                 );
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -35,7 +34,7 @@ public class DAOClub extends DAO<Club> {
             ResultSet result = this.connect
                     .createStatement(
                             ResultSet.TYPE_SCROLL_INSENSITIVE,
-                            ResultSet.CONCUR_UPDATABLE
+                            ResultSet.CONCUR_READ_ONLY
                     ).executeQuery(
                             "SELECT NEXTVAL('club_club_id_seq') as id"
                     );
@@ -43,20 +42,20 @@ public class DAOClub extends DAO<Club> {
                 long id = result.getLong("id");
                 PreparedStatement prepare = this.connect
                         .prepareStatement(
-                                "INSERT club (club_id, club_version, club_fabricant, club_poids) VALUES(?, ?, ?, ?)"
+                                "INSERT INTO club (club_id, club_version, club_fabricant, club_poids) VALUES(?, ?, ?, ?)"
                         );
                 prepare.setLong(1, id);
                 prepare.setInt(2, obj.getVersion());
-                prepare.setString(2, obj.getFabricant());
-                prepare.setDouble(2, obj.getPoids());
+                prepare.setString(3, obj.getFabricant());
+                prepare.setDouble(4, obj.getPoids());
 
                 prepare.executeUpdate();
-                obj = this.find(id);
+                return this.find(id);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return obj;
+        return null;
     }
 
     @Override

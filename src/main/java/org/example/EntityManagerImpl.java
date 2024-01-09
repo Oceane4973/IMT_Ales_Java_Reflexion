@@ -6,30 +6,82 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.metamodel.Metamodel;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
 public class EntityManagerImpl implements javax.persistence.EntityManager{
+    private final Connection connection;
+
+        public EntityManagerImpl() {
+            this.connection = ConnectionDatabase.getInstance();
+            if (!tableExists()) {
+                createTable(); // create table if not exists
+            }
+        }
+
+        private boolean tableExists() {
+            try {
+                Statement statement = connection.createStatement();
+                statement.executeQuery("SELECT 1 FROM club LIMIT 1");
+                return true;
+            } catch (SQLException e) {
+                return false;
+            }
+        }
+
+        private void createTable() {
+            try {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("""
+                        CREATE SEQUENCE club_club_id_seq START WITH 0 INCREMENT BY 1;            \s
+                        CREATE TABLE CLUB (club_id INTEGER DEFAULT NEXTVAL('CLUB_CLUB_ID_SEQ') PRIMARY KEY, club_version INTEGER, club_fabricant VARCHAR(64), club_poids DOUBLE PRECISION);\s
+                        """
+                );
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
     @Override
     public void persist(Object entity) {
-
+        if (entity instanceof Club) {
+            DAOClub daoClub = new DAOClub();
+            Club newEntity = daoClub.create((Club) entity);
+            ((Club) entity).setId(newEntity.getId());
+        }
     }
 
     @Override
     public <T> T merge(T entity) {
-        return null;
-    }
-
-    @Override
-    public void remove(Object entity) {
-
+        if (entity instanceof Club) {
+            DAOClub daoClub = new DAOClub();
+            daoClub.update((Club) entity);
+        }
+        return entity;
     }
 
     @Override
     public <T> T find(Class<T> entityClass, Object primaryKey) {
+        if (entityClass.equals(Club.class)) {
+            DAOClub daoClub = new DAOClub();
+            return (T) daoClub.find((long) primaryKey);
+        }
         return null;
     }
+    @Override
+    public void remove(Object entity) {
+        if (entity instanceof Club) {
+            DAOClub daoClub = new DAOClub();
+            daoClub.delete(((Club) entity));
+        }
+    }
+
+
+
+    // no changes
 
     @Override
     public <T> T find(Class<T> entityClass, Object primaryKey, Map<String, Object> properties) {

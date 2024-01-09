@@ -4,7 +4,7 @@ import java.sql.Connection;
 
 public abstract class DAO<T> {
 
-    public Connection connect = ConnectionBDD.getInstance();
+    public Connection connect = ConnectionDatabase.getInstance();
 
     /**
      * Permet de récupérer un objet via son ID
