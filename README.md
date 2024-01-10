@@ -50,7 +50,7 @@ A été implémenté, également les methodes suivantes:
 
     ```java
     private static String url = "jdbc:h2:tcp://localhost/~/<NOM_DE_LA_BASE_DE_DONNEE>";
-    private static String user = "<UTILISATEUR>";
+    private static String user = "<NOM_UTILISATEUR>";
     private static String passwd = "<MOT_DE_PASSE>";
     ```
 
@@ -73,7 +73,7 @@ A été implémenté, également les methodes suivantes:
     | Nom de configuration | Generic H2 (Embedded) |
     | Pilote JDBC | org.h2.Driver |
     | URL JDBC | jdbc:h2:~/<NOM_DE_LA_BASE_DE_DONNEE> |
-    | Nom d'utilisateur | <UTILISATEUR> |
+    | Nom d'utilisateur | <NOM_UTILISATEUR> |
     | Mot de passe | <MOT_DE_PASSE> |
 
 > Note: Par défault, il a été choisi les valeurs : 
