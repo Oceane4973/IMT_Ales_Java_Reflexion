@@ -1,4 +1,4 @@
-# IMT_Ales_Java_Reflexion
+# ORM-Java
 
 Ce TP consiste à créer un ORM basique inspiré d'Hibernate pour persister les données relatives à un club de golf. Les informations du club sont représentées par la classe `Club`, comprenant les attributs suivants :
 
@@ -16,6 +16,9 @@ L'élément central de notre framework est la classe `EntityManagerImpl`, qui im
 A été implémenté, également les methodes suivantes: 
 
 - `void remove(Object entity)`: Pour supprimer un objet dans la base de donnée.
+
+## Contexte
+Ce travail est un TP demandé par notre enseignant dans le cadre de la formation INFRES - DL (développement logiciel) à l'école des Mines d'alès.
 
 ## Utilisation de `EntityManagerImpl`
 
